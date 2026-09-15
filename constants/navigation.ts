@@ -4,15 +4,29 @@ export const NAVIGATION = [
     href: "/",
   },
   {
-    label: "Calendário",
-    href: "/calendar",
-  },
-  {
     label: "Jogos",
     href: "/fixtures",
   },
   {
-    label: "Resultados",
-    href: "/results",
+    label: "Competições",
+    href: "/competitions",
+    children: [
+      {
+        label: "Liga",
+        href: "/competitions/liga",
+      },
+      {
+        label: "Taça de Portugal",
+        href: "/competitions/taca-portugal",
+      },
+      {
+        label: "Taça da Liga",
+        href: "/competitions/taca-liga",
+      },
+      {
+        label: "Liga dos Campeões",
+        href: "/competitions/champions-league",
+      },
+    ],
   },
 ] as const;
