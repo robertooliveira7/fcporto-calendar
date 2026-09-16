@@ -87,7 +87,7 @@ export const FIXTURES: Match[] = [
   },
   {
     id: "liga-2026-27-j4-academico-fc-porto",
-    opponent: "Académico",
+    opponent: "Académico de Viseu",
     competition: "liga",
     round: "Jornada 4",
     date: "2026-08-29T17:00:00+01:00",
@@ -370,7 +370,7 @@ export const FIXTURES: Match[] = [
   },
   {
     id: "liga-2026-27-j21-fc-porto-academico",
-    opponent: "Académico",
+    opponent: "Académico de Viseu",
     competition: "liga",
     round: "Jornada 21",
     date: null,
@@ -645,6 +645,19 @@ export const FIXTURES: Match[] = [
     date: "2027-01-27T20:00:00+00:00",
     stadium: "Raiffeisen Arena",
     venue: "away",
+    status: "scheduled",
+    score: null,
+    goals: [],
+  },
+
+    {
+    id: "taca-liga-2026-27-qf",
+    opponent: "Académico de Viseu",
+    competition: "taca-liga",
+    round: "Quartos de final",
+    date: "2026-10-28T20:30:00+00:00",
+    stadium: "Estádio do Dragão",
+    venue: "home",
     status: "scheduled",
     score: null,
     goals: [],
