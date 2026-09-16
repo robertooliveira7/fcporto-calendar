@@ -44,17 +44,7 @@ export default function HomePage() {
 
       {followingMatches.length > 0 && (
         <section className="mt-12">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-                Jogos seguintes
-              </h2>
-
-              <p className="mt-1 text-sm text-slate-500">
-                 Os eventos que se seguem no calendário do FC Porto.
-              </p>
-            </div>
-
+          <div className="mb-4 flex justify-end">
             <a
               href="/fixtures"
               className="text-sm font-semibold text-blue-700 hover:text-blue-800"
@@ -63,11 +53,29 @@ export default function HomePage() {
             </a>
           </div>
 
-          <div className="mt-6 grid gap-4">
-            {followingMatches.map((match) => (
-              <MatchCard key={match.id} match={match} />
-            ))}
-          </div>
+          <details className="group rounded-xl border border-slate-200 bg-white">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-6 p-6">
+              <div>
+                <h2 className="text-xl font-bold tracking-tight text-slate-900">
+                  Jogos seguintes
+                </h2>
+
+                <p className="mt-1 text-sm text-slate-500">
+                  Os próximos eventos no calendário do FC Porto.
+                </p>
+              </div>
+
+              <span className="text-xl text-slate-500 transition-transform group-open:rotate-180">
+                ↓
+              </span>
+            </summary>
+
+            <div className="grid gap-4 border-t border-slate-100 p-6">
+              {followingMatches.map((match) => (
+                <MatchCard key={match.id} match={match} />
+              ))}
+            </div>
+          </details>
         </section>
       )}
     </main>
