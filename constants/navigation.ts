@@ -4,7 +4,7 @@ export const NAVIGATION = [
     href: "/",
   },
   {
-    label: "Jogos",
+    label: "Todos os Jogos",
     href: "/fixtures",
   },
   {

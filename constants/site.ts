@@ -1,7 +1,7 @@
 export const SITE = {
-  name: "FC Porto Calendar",
-  shortName: "FCP Calendar",
-  description: "The complete FC Porto fixture calendar.",
+  name: "Calendário FC Porto",
+  shortName: "Calendário FCP",
+  description: "Todos os jogos do FC Porto, num só lugar.",
   season: "2026/27",
   locale: "pt-PT",
   version: "0.1.0",
