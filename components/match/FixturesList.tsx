@@ -30,6 +30,25 @@ export function FixturesList({ matches }: FixturesListProps) {
 
     return matchesStatus && matchesCompetition;
   });
+  const groupedMatches = filteredMatches.reduce<Record<string, Match[]>>(
+  (groups, match) => {
+    const month = match.date
+      ? new Intl.DateTimeFormat("pt-PT", {
+          month: "long",
+          year: "numeric",
+        }).format(new Date(match.date))
+      : "Data por definir";
+
+    if (!groups[month]) {
+      groups[month] = [];
+    }
+
+    groups[month].push(match);
+
+    return groups;
+  },
+  {}
+);
 
   return (
     <>
@@ -97,11 +116,25 @@ export function FixturesList({ matches }: FixturesListProps) {
         </select>
       </div>
 
-      <div className="mt-8 grid gap-4">
-        {filteredMatches.map((match) => (
+      <div className="mt-10 space-y-12">
+  {Object.entries(groupedMatches).map(([month, monthMatches]) => (
+    <section key={month}>
+      <div className="mb-5 flex items-center gap-4">
+        <h2 className="shrink-0 text-lg font-bold capitalize text-slate-900">
+          {month}
+        </h2>
+
+        <div className="h-px flex-1 bg-slate-200" />
+      </div>
+
+      <div className="grid gap-4">
+        {monthMatches.map((match) => (
           <MatchCard key={match.id} match={match} />
         ))}
       </div>
+    </section>
+  ))}
+</div>
     </>
   );
 }
