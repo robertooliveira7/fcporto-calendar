@@ -1,0 +1,107 @@
+"use client";
+
+import { useState } from "react";
+import { MatchCard } from "@/components/match/MatchCard";
+import { COMPETITION_LABELS } from "@/constants/competitions";
+import type { Competition, Match } from "@/types/match";
+
+type FixturesListProps = {
+  matches: Match[];
+};
+
+type FixtureFilter = "all" | "upcoming" | "results";
+
+type CompetitionFilter = "all" | Competition;
+
+export function FixturesList({ matches }: FixturesListProps) {
+  const [filter, setFilter] = useState<FixtureFilter>("all");
+
+  const [competition, setCompetition] =
+    useState<CompetitionFilter>("all");
+
+  const filteredMatches = matches.filter((match) => {
+    const matchesStatus =
+      filter === "all" ||
+      (filter === "upcoming" && match.status === "scheduled") ||
+      (filter === "results" && match.status === "finished");
+
+    const matchesCompetition =
+      competition === "all" || match.competition === competition;
+
+    return matchesStatus && matchesCompetition;
+  });
+
+  return (
+    <>
+      <div className="mt-8 inline-flex rounded-lg border border-slate-200 bg-white p-1">
+        <button
+          type="button"
+          onClick={() => setFilter("all")}
+          className={`rounded-md px-4 py-2 text-sm font-semibold transition ${
+            filter === "all"
+              ? "bg-blue-700 text-white"
+              : "text-slate-600 hover:bg-slate-50"
+          }`}
+        >
+          Todos
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setFilter("upcoming")}
+          className={`rounded-md px-4 py-2 text-sm font-semibold transition ${
+            filter === "upcoming"
+              ? "bg-blue-700 text-white"
+              : "text-slate-600 hover:bg-slate-50"
+          }`}
+        >
+          Próximos
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setFilter("results")}
+          className={`rounded-md px-4 py-2 text-sm font-semibold transition ${
+            filter === "results"
+              ? "bg-blue-700 text-white"
+              : "text-slate-600 hover:bg-slate-50"
+          }`}
+        >
+          Resultados
+        </button>
+      </div>
+
+      <div className="mt-4">
+        <label
+          htmlFor="competition"
+          className="mb-2 block text-sm font-medium text-slate-700"
+        >
+          Competição
+        </label>
+
+        <select
+          id="competition"
+          value={competition}
+          onChange={(event) =>
+            setCompetition(event.target.value as CompetitionFilter)
+          }
+          className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 outline-none focus:border-blue-500"
+        >
+          <option value="all">Todas as competições</option>
+
+          {Object.entries(COMPETITION_LABELS).map(([value, label]) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="mt-8 grid gap-4">
+        {filteredMatches.map((match) => (
+          <MatchCard key={match.id} match={match} />
+        ))}
+      </div>
+    </>
+  );
+}
