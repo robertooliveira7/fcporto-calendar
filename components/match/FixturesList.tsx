@@ -18,18 +18,24 @@ export function FixturesList({ matches }: FixturesListProps) {
 
   const [competition, setCompetition] =
     useState<CompetitionFilter>("all");
+    const [search, setSearch] = useState("");
 
-  const filteredMatches = matches.filter((match) => {
-    const matchesStatus =
-      filter === "all" ||
-      (filter === "upcoming" && match.status === "scheduled") ||
-      (filter === "results" && match.status === "finished");
+ const filteredMatches = matches.filter((match) => {
+  const matchesStatus =
+    filter === "all" ||
+    (filter === "upcoming" && match.status === "scheduled") ||
+    (filter === "results" && match.status === "finished");
 
-    const matchesCompetition =
-      competition === "all" || match.competition === competition;
+  const matchesCompetition =
+    competition === "all" || match.competition === competition;
 
-    return matchesStatus && matchesCompetition;
-  });
+  const matchesSearch = match.opponent
+    .toLowerCase()
+    .includes(search.toLowerCase());
+
+  return matchesStatus && matchesCompetition && matchesSearch;
+});
+
   const groupedMatches = filteredMatches.reduce<Record<string, Match[]>>(
   (groups, match) => {
     const month = match.date
@@ -52,6 +58,23 @@ export function FixturesList({ matches }: FixturesListProps) {
 
   return (
     <>
+    <div className="mt-8">
+  <label
+    htmlFor="opponent-search"
+    className="mb-2 block text-sm font-medium text-slate-700"
+  >
+    Pesquisar adversário
+  </label>
+
+  <input
+    id="opponent-search"
+    type="search"
+    placeholder="Ex.: Benfica, Manchester City..."
+    value={search}
+    onChange={(event) => setSearch(event.target.value)}
+    className="w-full max-w-md rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 outline-none placeholder:text-slate-400 focus:border-blue-500"
+  />
+</div>
       <div className="mt-8 inline-flex rounded-lg border border-slate-200 bg-white p-1">
         <button
           type="button"
@@ -116,25 +139,37 @@ export function FixturesList({ matches }: FixturesListProps) {
         </select>
       </div>
 
-      <div className="mt-10 space-y-12">
-  {Object.entries(groupedMatches).map(([month, monthMatches]) => (
-    <section key={month}>
-      <div className="mb-5 flex items-center gap-4">
-        <h2 className="shrink-0 text-lg font-bold capitalize text-slate-900">
-          {month}
-        </h2>
+      {filteredMatches.length === 0 ? (
+  <div className="mt-10 rounded-xl border border-slate-200 bg-slate-50 px-6 py-10 text-center">
+    <p className="font-semibold text-slate-900">
+      Nenhum jogo encontrado
+    </p>
 
-        <div className="h-px flex-1 bg-slate-200" />
-      </div>
+    <p className="mt-2 text-sm text-slate-500">
+      Experimenta alterar a pesquisa ou os filtros selecionados.
+    </p>
+  </div>
+) : (
+  <div className="mt-10 space-y-12">
+    {Object.entries(groupedMatches).map(([month, monthMatches]) => (
+      <section key={month}>
+        <div className="mb-5 flex items-center gap-4">
+          <h2 className="shrink-0 text-lg font-bold capitalize text-slate-900">
+            {month}
+          </h2>
 
-      <div className="grid gap-4">
-        {monthMatches.map((match) => (
-          <MatchCard key={match.id} match={match} />
-        ))}
-      </div>
-    </section>
-  ))}
-</div>
-    </>
+          <div className="h-px flex-1 bg-slate-200" />
+        </div>
+
+        <div className="grid gap-4">
+          {monthMatches.map((match) => (
+            <MatchCard key={match.id} match={match} />
+          ))}
+        </div>
+      </section>
+    ))}
+  </div>
+)}
+</>
   );
-}
+  }
