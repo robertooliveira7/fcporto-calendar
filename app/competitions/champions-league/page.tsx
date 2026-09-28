@@ -1,12 +1,13 @@
-import { MatchCard } from "@/components/match/MatchCard";
-import { LeagueTable } from "@/components/standings/LeagueTable";
-import { FIXTURES } from "@/data/2026-27/fixtures";
-import { CHAMPIONS_STANDINGS } from "@/data/2026-27/champions-standings";
+import { FixturesList } from "@/components/match/FixturesList";
+import { ChampionsStandingsPreview } from "@/components/standings/ChampionsStandingsPreview";
+import { getChampionsStandings } from "@/services/football-data";
+import { getChampionsFixtures } from "@/services/matches";
 
-export default function ChampionsLeaguePage() {
-  const championsFixtures = FIXTURES.filter(
-    (match) => match.competition === "champions-league"
-  );
+export default async function ChampionsLeaguePage() {
+  const [standings, championsFixtures] = await Promise.all([
+    getChampionsStandings(),
+    getChampionsFixtures(),
+  ]);
 
   return (
     <main className="mx-auto w-full max-w-7xl px-6 py-12">
@@ -15,40 +16,19 @@ export default function ChampionsLeaguePage() {
       </h1>
 
       <p className="mt-2 text-slate-600">
-        Classificação e percurso do FC Porto na Liga dos Campeões 2026/27.
+        Jogos e classificação do FC Porto na Liga dos Campeões 2026/27.
       </p>
 
-      <section className="mt-10">
-        <div className="mb-5">
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-            Classificação
-          </h2>
+      <div className="mt-10">
+        <ChampionsStandingsPreview standings={standings} />
+      </div>
 
-          <p className="mt-1 text-sm text-slate-500">
-            Fase de liga · Liga dos Campeões 2026/27
-          </p>
-        </div>
-
-        <LeagueTable standings={CHAMPIONS_STANDINGS} />
-      </section>
-
-      <section className="mt-14">
-        <div className="mb-5">
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-            Jogos
-          </h2>
-
-          <p className="mt-1 text-sm text-slate-500">
-            Todos os jogos do FC Porto na Liga dos Campeões.
-          </p>
-        </div>
-
-        <div className="grid gap-4">
-          {championsFixtures.map((match) => (
-            <MatchCard key={match.id} match={match} />
-          ))}
-        </div>
-      </section>
+      <div className="mt-12">
+        <FixturesList
+          matches={championsFixtures}
+          showCompetitionFilter={false}
+        />
+      </div>
     </main>
   );
 }

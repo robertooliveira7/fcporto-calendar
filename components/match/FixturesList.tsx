@@ -7,13 +7,17 @@ import type { Competition, Match } from "@/types/match";
 
 type FixturesListProps = {
   matches: Match[];
+  showCompetitionFilter?: boolean;
 };
 
 type FixtureFilter = "all" | "upcoming" | "results";
 
 type CompetitionFilter = "all" | Competition;
 
-export function FixturesList({ matches }: FixturesListProps) {
+export function FixturesList({
+  matches,
+  showCompetitionFilter = true,
+}: FixturesListProps) {
   const [filter, setFilter] = useState<FixtureFilter>("all");
 
   const [competition, setCompetition] =
@@ -113,31 +117,33 @@ export function FixturesList({ matches }: FixturesListProps) {
         </button>
       </div>
 
-      <div className="mt-4">
-        <label
-          htmlFor="competition"
-          className="mb-2 block text-sm font-medium text-slate-700"
-        >
-          Competição
-        </label>
+     {showCompetitionFilter && (
+  <div className="mt-4">
+    <label
+      htmlFor="competition"
+      className="mb-2 block text-sm font-medium text-slate-700"
+    >
+      Competição
+    </label>
 
-        <select
-          id="competition"
-          value={competition}
-          onChange={(event) =>
-            setCompetition(event.target.value as CompetitionFilter)
-          }
-          className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 outline-none focus:border-blue-500"
-        >
-          <option value="all">Todas as competições</option>
+    <select
+      id="competition"
+      value={competition}
+      onChange={(event) =>
+        setCompetition(event.target.value as CompetitionFilter)
+      }
+      className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 outline-none focus:border-blue-500"
+    >
+      <option value="all">Todas as competições</option>
 
-          {Object.entries(COMPETITION_LABELS).map(([value, label]) => (
-            <option key={value} value={value}>
-              {label}
-            </option>
-          ))}
-        </select>
-      </div>
+      {Object.entries(COMPETITION_LABELS).map(([value, label]) => (
+        <option key={value} value={value}>
+          {label}
+        </option>
+      ))}
+    </select>
+  </div>
+)}
 
       {filteredMatches.length === 0 ? (
   <div className="mt-10 rounded-xl border border-slate-200 bg-slate-50 px-6 py-10 text-center">

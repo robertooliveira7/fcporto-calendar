@@ -1,14 +1,8 @@
 import { FixturesList } from "@/components/match/FixturesList";
-import { FIXTURES } from "@/data/2026-27/fixtures";
+import { getAllFixtures } from "@/services/matches";
 
-export default function FixturesPage() {
-  const sortedFixtures = [...FIXTURES].sort((a, b) => {
-    if (!a.date && !b.date) return 0;
-    if (!a.date) return 1;
-    if (!b.date) return -1;
-
-    return new Date(a.date).getTime() - new Date(b.date).getTime();
-  });
+export default async function FixturesPage() {
+  const fixtures = await getAllFixtures();
 
   return (
     <main className="mx-auto w-full max-w-7xl px-6 py-12">
@@ -20,7 +14,7 @@ export default function FixturesPage() {
         Consulta todos os jogos do FC Porto na época 2026/27.
       </p>
 
-      <FixturesList matches={sortedFixtures} />
+      <FixturesList matches={fixtures} />
     </main>
   );
 }
