@@ -6,6 +6,8 @@ import type { Match, MatchStatus } from "@/types/match";
 import type { Standing } from "@/types/standings";
 
 const API_BASE_URL = "https://api.football-data.org/v4";
+const FC_PORTO_ID = 503;
+const FC_ALVERCA_ID = 7822;
 
 function getApiToken() {
   const token = process.env.FOOTBALL_DATA_API_TOKEN;
@@ -83,7 +85,7 @@ export async function getLigaStandings(): Promise<Standing[]> {
 
 export async function getLigaMatches(): Promise<Match[]> {
   const response = await fetch(
-    `${API_BASE_URL}/teams/503/matches?season=2026&competitions=2017`,
+    `${API_BASE_URL}/teams/${FC_PORTO_ID}/matches?season=2026&competitions=2017`,
     {
       headers: {
         "X-Auth-Token": getApiToken(),
@@ -104,7 +106,7 @@ export async function getLigaMatches(): Promise<Match[]> {
     (await response.json()) as FootballDataMatchesResponse;
 
   return data.matches.map((match) => {
-    const fcPortoIsHome = match.homeTeam.id === 503;
+    const fcPortoIsHome = match.homeTeam.id === FC_PORTO_ID;
 
     const opponent = fcPortoIsHome
       ? match.awayTeam
@@ -125,26 +127,46 @@ export async function getLigaMatches(): Promise<Match[]> {
     return {
       id: `liga-api-${match.id}`,
       opponent: opponent.shortName,
+
+      fcPortoCrest: fcPortoIsHome
+        ? match.homeTeam.crest
+        : match.awayTeam.crest,
+
+      opponentCrest:
+        opponent.id === FC_ALVERCA_ID
+          ? "/logos/alverca.png"
+          : opponent.crest,
+
       competition: "liga",
+
       round: match.matchday
         ? `Jornada ${match.matchday}`
         : "Liga",
+
       date,
+
       stadium: fcPortoIsHome
         ? "Estádio do Dragão"
         : "",
-      venue: fcPortoIsHome ? "home" : "away",
+
+      venue: fcPortoIsHome
+        ? "home"
+        : "away",
+
       status: mapFootballDataStatus(match.status),
+
       score: hasScore
         ? {
             fcPorto: fcPortoIsHome
               ? homeScore
               : awayScore,
+
             opponent: fcPortoIsHome
               ? awayScore
               : homeScore,
           }
         : null,
+
       goals: [],
     };
   });
@@ -198,7 +220,7 @@ export async function getChampionsStandings(): Promise<Standing[]> {
 
 export async function getChampionsMatches(): Promise<Match[]> {
   const response = await fetch(
-    `${API_BASE_URL}/teams/503/matches?season=2026&competitions=2001`,
+    `${API_BASE_URL}/teams/${FC_PORTO_ID}/matches?season=2026&competitions=2001`,
     {
       headers: {
         "X-Auth-Token": getApiToken(),
@@ -219,7 +241,7 @@ export async function getChampionsMatches(): Promise<Match[]> {
     (await response.json()) as FootballDataMatchesResponse;
 
   return data.matches.map((match) => {
-    const fcPortoIsHome = match.homeTeam.id === 503;
+    const fcPortoIsHome = match.homeTeam.id === FC_PORTO_ID;
 
     const opponent = fcPortoIsHome
       ? match.awayTeam
@@ -234,26 +256,43 @@ export async function getChampionsMatches(): Promise<Match[]> {
     return {
       id: `champions-api-${match.id}`,
       opponent: opponent.shortName,
+
+      fcPortoCrest: fcPortoIsHome
+        ? match.homeTeam.crest
+        : match.awayTeam.crest,
+
+      opponentCrest: opponent.crest,
+
       competition: "champions-league",
+
       round: match.matchday
         ? `Jornada ${match.matchday}`
         : "Liga dos Campeões",
+
       date: match.utcDate,
+
       stadium: fcPortoIsHome
         ? "Estádio do Dragão"
         : "",
-      venue: fcPortoIsHome ? "home" : "away",
+
+      venue: fcPortoIsHome
+        ? "home"
+        : "away",
+
       status: mapFootballDataStatus(match.status),
+
       score: hasScore
         ? {
             fcPorto: fcPortoIsHome
               ? homeScore
               : awayScore,
+
             opponent: fcPortoIsHome
               ? awayScore
               : homeScore,
           }
         : null,
+
       goals: [],
     };
   });

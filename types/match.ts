@@ -11,16 +11,26 @@ export type MatchStatus =
   | "postponed"
   | "cancelled";
 
+  export type Goal = {
+  team: "fc-porto" | "opponent";
+  scorer: string;
+  minute: string;
+  penalty: boolean;
+};
 export type Match = {
   id: string;
   opponent: string;
   competition: Competition;
-  date: string;
+  round: string;
+  date: string | null;
   stadium: string;
   venue: "home" | "away";
   status: MatchStatus;
   score: {
-    fcPorto: number;
-    opponent: number;
-  } | null;
+  fcPorto: number;
+  opponent: number;
+} | null;
+goals: Goal[];
+fcPortoCrest?: string;
+opponentCrest?: string;
 };

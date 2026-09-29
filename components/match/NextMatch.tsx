@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { MatchCountdown } from "@/components/match/MatchCountdown";
 import { COMPETITION_LABELS } from "@/constants/competitions";
 import type { Match } from "@/types/match";
@@ -16,6 +18,22 @@ export function NextMatch({ match }: NextMatchProps) {
         minute: "2-digit",
       }).format(new Date(match.date))
     : "Data por definir";
+
+  const homeTeamName =
+    match.venue === "home" ? "FC Porto" : match.opponent;
+
+  const awayTeamName =
+    match.venue === "home" ? match.opponent : "FC Porto";
+
+  const homeTeamCrest =
+    match.venue === "home"
+      ? match.fcPortoCrest
+      : match.opponentCrest;
+
+  const awayTeamCrest =
+    match.venue === "home"
+      ? match.opponentCrest
+      : match.fcPortoCrest;
 
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-8">
@@ -36,25 +54,56 @@ export function NextMatch({ match }: NextMatchProps) {
       </div>
 
       <div className="my-10 grid grid-cols-[1fr_auto_1fr] items-center gap-6">
-        <p className="text-xl font-bold text-slate-900">
-          {match.venue === "home" ? "FC Porto" : match.opponent}
-        </p>
+        <div className="flex items-center gap-4">
+          {homeTeamCrest && (
+            <Image
+              src={homeTeamCrest}
+              alt={`Símbolo ${homeTeamName}`}
+              width={56}
+              height={56}
+              unoptimized
+              className="h-14 w-14 object-contain"
+            />
+          )}
+
+          <p className="text-xl font-bold text-slate-900">
+            {homeTeamName}
+          </p>
+        </div>
 
         <span className="text-sm font-semibold uppercase tracking-widest text-slate-400">
           vs
         </span>
 
-        <p className="text-right text-xl font-bold text-slate-900">
-          {match.venue === "home" ? match.opponent : "FC Porto"}
-        </p>
+        <div className="flex items-center justify-end gap-4">
+          <p className="text-right text-xl font-bold text-slate-900">
+            {awayTeamName}
+          </p>
+
+          {awayTeamCrest && (
+            <Image
+              src={awayTeamCrest}
+              alt={`Símbolo ${awayTeamName}`}
+              width={56}
+              height={56}
+              unoptimized
+              className="h-14 w-14 object-contain"
+            />
+          )}
+        </div>
       </div>
 
       <div className="border-t border-slate-100 pt-5">
-  <p className="font-medium text-slate-900">{formattedDate}</p>
-  <p className="mt-1 text-sm text-slate-500">{match.stadium}</p>
+        <p className="font-medium text-slate-900">
+          {formattedDate}
+        </p>
 
-  {match.date && <MatchCountdown date={match.date} />}
-</div>
+        <p className="mt-1 text-sm text-slate-500">
+          {match.stadium}
+        </p>
+
+        {match.date && <MatchCountdown date={match.date} />}
+      </div>
     </section>
   );
 }

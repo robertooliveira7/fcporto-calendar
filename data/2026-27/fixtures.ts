@@ -690,5 +690,8 @@ export const FIXTURES: Match[] = [
     status: "scheduled",
     score: null,
     goals: [],
+   
+    fcPortoCrest: "https://crests.football-data.org/503.png",
+    opponentCrest: "https://crests.football-data.org/5527.png",
   },
 ];
