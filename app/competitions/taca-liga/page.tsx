@@ -1,10 +1,8 @@
 import { MatchCard } from "@/components/match/MatchCard";
-import { FIXTURES } from "@/data/2026-27/fixtures";
+import { getTacaLigaMatch } from "@/services/liga-portugal";
 
-export default function TacaLigaPage() {
-  const tacaLigaFixtures = FIXTURES.filter(
-    (match) => match.competition === "taca-liga"
-  );
+export default async function TacaLigaPage() {
+  const match = await getTacaLigaMatch();
 
   return (
     <main className="mx-auto w-full max-w-7xl px-6 py-12">
@@ -17,9 +15,7 @@ export default function TacaLigaPage() {
       </p>
 
       <div className="mt-8 grid gap-4">
-        {tacaLigaFixtures.map((match) => (
-          <MatchCard key={match.id} match={match} />
-        ))}
+        <MatchCard match={match} />
       </div>
     </main>
   );
