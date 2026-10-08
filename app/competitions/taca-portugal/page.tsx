@@ -1,4 +1,9 @@
-export default function TacaPortugalPage() {
+import { MatchCard } from "@/components/match/MatchCard";
+import { getTacaPortugalFixtures } from "@/services/fpf";
+
+export default async function TacaPortugalPage() {
+  const fixtures = await getTacaPortugalFixtures();
+
   return (
     <main className="mx-auto w-full max-w-7xl px-6 py-12">
       <h1 className="text-3xl font-bold tracking-tight text-slate-900">
@@ -9,23 +14,19 @@ export default function TacaPortugalPage() {
         Percurso do FC Porto na Taça de Portugal 2026/27.
       </p>
 
-      <section className="mt-8 rounded-xl border border-slate-200 bg-white p-6">
-        <p className="text-sm font-medium text-slate-500">
-          Próxima eliminatória
-        </p>
-
-        <h2 className="mt-2 text-xl font-semibold text-slate-900">
-          4.ª Eliminatória
-        </h2>
-
-        <p className="mt-4 text-slate-600">
-          O adversário do FC Porto ainda não está definido.
-        </p>
-
-        <p className="mt-2 text-sm text-slate-500">
-          Data prevista: novembro de 2026
-        </p>
-      </section>
+      <div className="mt-8 grid gap-4">
+        {fixtures.length > 0 ? (
+          fixtures.map((match) => (
+            <MatchCard key={match.id} match={match} />
+          ))
+        ) : (
+          <section className="rounded-xl border border-slate-200 bg-white p-6">
+            <p className="text-slate-600">
+              Ainda não existem jogos definidos para o FC Porto na Taça de Portugal.
+            </p>
+          </section>
+        )}
+      </div>
     </main>
   );
 }

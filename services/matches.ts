@@ -1,3 +1,4 @@
+import { getTacaPortugalFixtures } from "@/services/fpf";
 import { FIXTURES } from "@/data/2026-27/fixtures";
 import {
   getChampionsMatches,
@@ -89,13 +90,13 @@ export async function getAllFixtures(): Promise<Match[]> {
     tacaLigaFixtures,
   ] = await Promise.all([
     getLigaFixtures(),
+    getTacaPortugalFixtures(),
     getChampionsFixtures(),
     getTacaLigaFixtures(),
   ]);
 
-  const tacaPortugalFixtures = FIXTURES.filter(
-    (match) => match.competition === "taca-portugal"
-  );
+const tacaPortugalFixtures =
+  await getTacaPortugalFixtures();
 
   return [
     ...ligaFixtures,
