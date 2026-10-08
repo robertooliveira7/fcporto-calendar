@@ -57,110 +57,157 @@ export default async function HomePage() {
   );
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-6 py-12">
+    <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
+      {/* Introdução */}
       <section>
-        <p className="text-sm font-semibold uppercase tracking-wider text-blue-700">
-          Época 2026/27
-        </p>
+        <div className="flex flex-col gap-2">
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-600">
+            Época 2026/27
+          </p>
 
-        <h1 className="mt-3 text-4xl font-bold tracking-tight text-slate-900">
-          Calendário FC Porto
-        </h1>
+          <h1 className="text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
+            Calendário FC Porto
+          </h1>
 
-        <p className="mt-3 max-w-2xl text-slate-600">
-          Todos os jogos do FC Porto, num só lugar.
-        </p>
+          <p className="max-w-2xl text-sm text-slate-500 sm:text-base">
+            Todos os jogos do FC Porto, num só lugar.
+          </p>
+        </div>
       </section>
 
+      {/* Próximo jogo */}
       {nextMatch && (
-        <div className="mt-10">
+        <section className="mt-7">
           <NextMatch match={nextMatch} />
-        </div>
+        </section>
       )}
 
-      {followingMatches.length > 0 && (
-        <div className="mt-6">
+      {/* Jogos */}
+      <section className="mt-8">
+        <div className="mb-4">
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-400">
+            Calendário
+          </p>
+
+          <h2 className="mt-1 text-xl font-bold tracking-tight text-slate-900">
+            Jogos
+          </h2>
+        </div>
+
+        <div className="space-y-6">
+          {followingMatches.length > 0 && (
+            <ExpandableSection
+              title="Jogos seguintes"
+              description="Os próximos jogos do FC Porto."
+              link={{
+                label: "Ver todos",
+                href: "/fixtures",
+              }}
+            >
+              <div className="grid gap-3">
+                {followingMatches.map((match) => (
+                  <MatchCard key={match.id} match={match} />
+                ))}
+              </div>
+            </ExpandableSection>
+          )}
+
+          {recentResults.length > 0 && (
+            <ExpandableSection
+              title="Resultados recentes"
+              description="Os últimos resultados do FC Porto."
+              link={{
+                label: "Ver todos",
+                href: "/fixtures",
+              }}
+            >
+              <div className="grid gap-3">
+                {recentResults.map((match) => (
+                  <MatchCard key={match.id} match={match} />
+                ))}
+              </div>
+            </ExpandableSection>
+          )}
+        </div>
+      </section>
+
+      {/* Classificações */}
+      <section className="mt-10 border-t border-slate-200 pt-8">
+        <div className="mb-4">
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-400">
+            Classificações
+          </p>
+
+          <h2 className="mt-1 text-xl font-bold tracking-tight text-slate-900">
+            FC Porto
+          </h2>
+        </div>
+
+        <div className="space-y-6">
           <ExpandableSection
-            title="Jogos seguintes"
-            description="Os próximos eventos no calendário do FC Porto."
+            title="Liga"
+            description="Classificação atual da Liga Portugal."
             link={{
-              label: "Ver todos",
-              href: "/fixtures",
+              label: "Ver classificação",
+              href: "/competitions/liga",
             }}
           >
-            <div className="grid gap-4">
-              {followingMatches.map((match) => (
-                <MatchCard key={match.id} match={match} />
-              ))}
-            </div>
+            <LeagueStandingsPreview standings={ligaStandings} />
+          </ExpandableSection>
+
+          <ExpandableSection
+            title="Liga dos Campeões"
+            description="Classificação atual da fase de liga."
+            link={{
+              label: "Ver classificação",
+              href: "/competitions/champions-league",
+            }}
+          >
+            <ChampionsStandingsPreview
+              standings={championsStandings}
+            />
           </ExpandableSection>
         </div>
-      )}
+      </section>
 
-      {recentResults.length > 0 && (
-        <ExpandableSection
-          title="Resultados recentes"
-          description="Os últimos resultados do FC Porto."
-          link={{
-            label: "Ver todos",
-            href: "/fixtures",
-          }}
-        >
-          <div className="grid gap-4">
-            {recentResults.map((match) => (
-              <MatchCard key={match.id} match={match} />
-            ))}
-          </div>
-        </ExpandableSection>
-      )}
+      {/* Taças */}
+      <section className="mt-10 border-t border-slate-200 pt-8">
+        <div className="mb-4">
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-400">
+            Competições
+          </p>
 
-      <ExpandableSection
-        title="Liga"
-        description="Classificação atual da Liga Portugal."
-        link={{
-          label: "Ver classificação",
-          href: "/competitions/liga",
-        }}
-      >
-        <LeagueStandingsPreview standings={ligaStandings} />
-      </ExpandableSection>
+          <h2 className="mt-1 text-xl font-bold tracking-tight text-slate-900">
+            Taças
+          </h2>
+        </div>
 
-      <ExpandableSection
-        title="Liga dos Campeões"
-        description="Classificação atual da fase de liga."
-        link={{
-          label: "Ver classificação",
-          href: "/competitions/champions-league",
-        }}
-      >
-        <ChampionsStandingsPreview
-          standings={championsStandings}
-        />
-      </ExpandableSection>
+        <div className="space-y-6">
+          <ExpandableSection
+            title="Taça de Portugal"
+            description="Percurso do FC Porto na competição."
+            link={{
+              label: "Ver competição",
+              href: "/competitions/taca-portugal",
+            }}
+          >
+            <CompetitionStageProgress
+              stages={TACA_PORTUGAL_STAGES}
+            />
+          </ExpandableSection>
 
-      <ExpandableSection
-        title="Taça de Portugal"
-        description="Percurso do FC Porto na competição."
-        link={{
-          label: "Ver competição",
-          href: "/competitions/taca-portugal",
-        }}
-      >
-        <CompetitionStageProgress
-          stages={TACA_PORTUGAL_STAGES}
-        />
-      </ExpandableSection>
-
-      <ExpandableSection
-        title="Taça da Liga"
-        description="Percurso do FC Porto na competição."
-        link={{
-          label: "Ver competição",
-          href: "/competitions/taca-liga",
-        }}
-      >
-        <CompetitionProgress matches={tacaLigaMatches} />
-      </ExpandableSection>
+          <ExpandableSection
+            title="Taça da Liga"
+            description="Percurso do FC Porto na competição."
+            link={{
+              label: "Ver competição",
+              href: "/competitions/taca-liga",
+            }}
+          >
+            <CompetitionProgress matches={tacaLigaMatches} />
+          </ExpandableSection>
+        </div>
+      </section>
     </main>
   );
 }

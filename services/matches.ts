@@ -1,5 +1,5 @@
-import { getTacaPortugalFixtures } from "@/services/fpf";
 import { FIXTURES } from "@/data/2026-27/fixtures";
+import { getTacaPortugalFixtures } from "@/services/fpf";
 import {
   getChampionsMatches,
   getLigaMatches,
@@ -88,15 +88,13 @@ export async function getAllFixtures(): Promise<Match[]> {
     ligaFixtures,
     championsFixtures,
     tacaLigaFixtures,
+    tacaPortugalFixtures,
   ] = await Promise.all([
     getLigaFixtures(),
-    getTacaPortugalFixtures(),
     getChampionsFixtures(),
     getTacaLigaFixtures(),
+    getTacaPortugalFixtures(),
   ]);
-
-const tacaPortugalFixtures =
-  await getTacaPortugalFixtures();
 
   return [
     ...ligaFixtures,
