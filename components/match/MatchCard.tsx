@@ -1,132 +1,324 @@
 import Image from "next/image";
 
 import { COMPETITION_LABELS } from "@/constants/competitions";
-import type { Match } from "@/types/match";
+import type { Goal, Match } from "@/types/match";
 
 type MatchCardProps = {
   match: Match;
 };
 
-export function MatchCard({ match }: MatchCardProps) {
-  const formattedDate = match.date
-    ? new Intl.DateTimeFormat("pt-PT", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }).format(new Date(match.date))
-    : "Data por definir";
+function getMatchOutcome(match: Match) {
+  if (match.status !== "finished" || !match.score) {
+    return null;
+  }
 
-  const fcPortoGoals = match.goals.filter(
-    (goal) => goal.team === "fc-porto"
-  );
+  if (match.score.fcPorto > match.score.opponent) {
+    return "win";
+  }
 
-  const opponentGoals = match.goals.filter(
-    (goal) => goal.team === "opponent"
-  );
+  if (match.score.fcPorto < match.score.opponent) {
+    return "loss";
+  }
 
-  const homeTeamName =
-    match.venue === "home" ? "FC Porto" : match.opponent;
+  return "draw";
+}
 
-  const awayTeamName =
-    match.venue === "home" ? match.opponent : "FC Porto";
+function getStatusLabel(match: Match) {
+  switch (match.status) {
+    case "finished":
+      return "Terminado";
+    case "live":
+      return "Ao vivo";
+    case "postponed":
+      return "Adiado";
+    case "cancelled":
+      return "Cancelado";
+    default:
+      return "Agendado";
+  }
+}
 
-  const homeTeamCrest =
-    match.venue === "home"
-      ? match.fcPortoCrest
-      : match.opponentCrest;
+function getStatusStyles(match: Match) {
+  if (match.status === "live") {
+    return "bg-red-50 text-red-700 ring-red-200";
+  }
 
-  const awayTeamCrest =
-    match.venue === "home"
-      ? match.opponentCrest
-      : match.fcPortoCrest;
+  if (match.status === "finished") {
+    return "bg-slate-100 text-slate-600 ring-slate-200";
+  }
 
-  const homeGoals =
-    match.venue === "home" ? fcPortoGoals : opponentGoals;
+  if (match.status === "postponed" || match.status === "cancelled") {
+    return "bg-amber-50 text-amber-700 ring-amber-200";
+  }
 
-  const awayGoals =
-    match.venue === "home" ? opponentGoals : fcPortoGoals;
+  return "bg-blue-50 text-blue-700 ring-blue-200";
+}
+
+function getOutcomeBorder(match: Match) {
+  const outcome = getMatchOutcome(match);
+
+  if (outcome === "win") {
+    return "border-l-4 border-l-emerald-500";
+  }
+
+  if (outcome === "loss") {
+    return "border-l-4 border-l-red-400";
+  }
+
+  if (outcome === "draw") {
+    return "border-l-4 border-l-slate-400";
+  }
+
+  return "border-l-4 border-l-blue-600";
+}
+
+function formatDate(date: string | null) {
+  if (!date) {
+    return {
+      date: "Data por definir",
+      time: null,
+    };
+  }
+
+  const parsedDate = new Date(date);
+
+  return {
+    date: new Intl.DateTimeFormat("pt-PT", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      timeZone: "Europe/Lisbon",
+    })
+      .format(parsedDate)
+      .replace(".", "")
+      .toUpperCase(),
+
+    time: new Intl.DateTimeFormat("pt-PT", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+      timeZone: "Europe/Lisbon",
+    }).format(parsedDate),
+  };
+}
+
+function GoalList({
+  goals,
+  align = "left",
+}: {
+  goals: Goal[];
+  align?: "left" | "right";
+}) {
+  if (goals.length === 0) {
+    return null;
+  }
 
   return (
-    <article className="rounded-xl border border-slate-200 bg-white p-6">
-      <div className="flex items-center gap-2 text-sm font-medium text-slate-500">
-        <span>{COMPETITION_LABELS[match.competition]}</span>
-        <span>•</span>
-        <span>{match.round}</span>
-        <span>•</span>
-        <span>{match.venue === "home" ? "Casa" : "Fora"}</span>
-      </div>
+    <div
+      className={`space-y-1 ${
+        align === "right" ? "text-right" : "text-left"
+      }`}
+    >
+      {goals.map((goal, index) => (
+        <p
+          key={`${goal.scorer}-${goal.minute}-${index}`}
+          className="text-xs leading-5 text-slate-500 sm:text-sm"
+        >
+          {goal.scorer}
+          {goal.penalty ? " (p)" : ""}{" "}
+          <span className="font-medium text-slate-400">
+            {goal.minute}&apos;
+          </span>
+        </p>
+      ))}
+    </div>
+  );
+}
 
-      <div className="mt-5 grid grid-cols-[1fr_auto_1fr] items-start gap-6">
-        <div>
-          <div className="flex items-center gap-3">
-            {homeTeamCrest && (
-              <Image
-                src={homeTeamCrest}
-                alt={`Símbolo ${homeTeamName}`}
-                width={40}
-                height={40}
-                unoptimized
-                className="h-10 w-10 object-contain"
-              />
-            )}
+export function MatchCard({ match }: MatchCardProps) {
+  const fcPortoIsHome = match.venue === "home";
 
-            <p className="font-semibold text-slate-900">
-              {homeTeamName}
-            </p>
+  const homeTeam = fcPortoIsHome ? "FC Porto" : match.opponent;
+  const awayTeam = fcPortoIsHome ? match.opponent : "FC Porto";
+
+  const homeCrest = fcPortoIsHome
+    ? match.fcPortoCrest
+    : match.opponentCrest;
+
+  const awayCrest = fcPortoIsHome
+    ? match.opponentCrest
+    : match.fcPortoCrest;
+
+  const homeGoals = match.goals.filter((goal) =>
+    fcPortoIsHome
+      ? goal.team === "fc-porto"
+      : goal.team === "opponent"
+  );
+
+  const awayGoals = match.goals.filter((goal) =>
+    fcPortoIsHome
+      ? goal.team === "opponent"
+      : goal.team === "fc-porto"
+  );
+
+  const homeScore = match.score
+    ? fcPortoIsHome
+      ? match.score.fcPorto
+      : match.score.opponent
+    : null;
+
+  const awayScore = match.score
+    ? fcPortoIsHome
+      ? match.score.opponent
+      : match.score.fcPorto
+    : null;
+
+  const { date, time } = formatDate(match.date);
+
+  return (
+    <article
+      className={`overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${getOutcomeBorder(
+        match
+      )}`}
+    >
+      <div className="p-4 sm:p-5">
+        {/* Cabeçalho */}
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+            <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+              {COMPETITION_LABELS[match.competition]}
+            </span>
+
+            <span className="text-slate-300">·</span>
+
+            <span className="text-xs font-medium uppercase tracking-[0.08em] text-slate-400">
+              {match.round}
+            </span>
           </div>
 
-          <div className="mt-3 space-y-1 text-sm text-slate-500">
-            {homeGoals.map((goal, index) => (
-              <p key={`${goal.scorer}-${goal.minute}-${index}`}>
-                {goal.scorer}
-                {goal.penalty ? " (p)" : ""} {goal.minute}&apos;
-              </p>
-            ))}
+          <span
+            className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] ring-1 ring-inset ${getStatusStyles(
+              match
+            )}`}
+          >
+            {getStatusLabel(match)}
+          </span>
+        </div>
+
+        {/* Equipas + resultado */}
+        <div className="mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-3 sm:gap-6">
+          {/* Casa */}
+          <div className="flex min-w-0 flex-col items-center gap-2.5 text-center sm:flex-row sm:text-left">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center sm:h-14 sm:w-14">
+              {homeCrest ? (
+                <Image
+                  src={homeCrest}
+                  alt={`Símbolo ${homeTeam}`}
+                  width={48}
+                  height={48}
+                  unoptimized
+                  className="max-h-12 max-w-12 object-contain sm:max-h-14 sm:max-w-14"
+                />
+              ) : (
+                <div className="h-10 w-10 rounded-full bg-slate-100" />
+              )}
+            </div>
+
+            <span
+              className={`min-w-0 text-sm font-semibold leading-tight sm:text-base ${
+                homeTeam === "FC Porto"
+                  ? "text-slate-950"
+                  : "text-slate-700"
+              }`}
+            >
+              {homeTeam}
+            </span>
+          </div>
+
+          {/* Centro */}
+          <div className="flex min-w-[76px] flex-col items-center justify-center">
+            {match.status === "finished" && match.score ? (
+              <div className="whitespace-nowrap text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">
+                {homeScore}
+                <span className="mx-2 font-normal text-slate-300">—</span>
+                {awayScore}
+              </div>
+            ) : (
+              <>
+                {time ? (
+                  <div className="text-xl font-bold tracking-tight text-slate-950 sm:text-2xl">
+                    {time}
+                  </div>
+                ) : (
+                  <div className="text-sm font-semibold uppercase tracking-wide text-slate-400">
+                    vs
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+
+          {/* Fora */}
+          <div className="flex min-w-0 flex-col items-center gap-2.5 text-center sm:flex-row-reverse sm:text-right">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center sm:h-14 sm:w-14">
+              {awayCrest ? (
+                <Image
+                  src={awayCrest}
+                  alt={`Símbolo ${awayTeam}`}
+                  width={48}
+                  height={48}
+                  unoptimized
+                  className="max-h-12 max-w-12 object-contain sm:max-h-14 sm:max-w-14"
+                />
+              ) : (
+                <div className="h-10 w-10 rounded-full bg-slate-100" />
+              )}
+            </div>
+
+            <span
+              className={`min-w-0 text-sm font-semibold leading-tight sm:text-base ${
+                awayTeam === "FC Porto"
+                  ? "text-slate-950"
+                  : "text-slate-700"
+              }`}
+            >
+              {awayTeam}
+            </span>
           </div>
         </div>
 
-        <span className="pt-2 text-lg font-bold text-slate-900">
-          {match.status === "finished" && match.score
-            ? match.venue === "home"
-              ? `${match.score.fcPorto} - ${match.score.opponent}`
-              : `${match.score.opponent} - ${match.score.fcPorto}`
-            : "vs"}
-        </span>
+      {/* Marcadores */}
+{match.goals.length > 0 && (
+  <div className="mt-4 grid grid-cols-2 gap-6 border-t border-slate-100 pt-3">
+    <div>
+      <GoalList goals={homeGoals} />
+    </div>
 
-        <div className="text-right">
-          <div className="flex items-center justify-end gap-3">
-            <p className="font-semibold text-slate-900">
-              {awayTeamName}
-            </p>
+    <div>
+      <GoalList goals={awayGoals} align="right" />
+    </div>
+  </div>
+)}
 
-            {awayTeamCrest && (
-              <Image
-                src={awayTeamCrest}
-                alt={`Símbolo ${awayTeamName}`}
-                width={40}
-                height={40}
-                unoptimized
-                className="h-10 w-10 object-contain"
-              />
+        {/* Rodapé */}
+        <div className="mt-4 flex flex-col gap-2 border-t border-slate-100 pt-3 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-2">
+            <span className="font-medium text-slate-600">{date}</span>
+
+            {match.status === "finished" && time && (
+              <>
+                <span className="text-slate-300">·</span>
+                <span>{time}</span>
+              </>
             )}
           </div>
 
-          <div className="mt-3 space-y-1 text-sm text-slate-500">
-            {awayGoals.map((goal, index) => (
-              <p key={`${goal.scorer}-${goal.minute}-${index}`}>
-                {goal.scorer}
-                {goal.penalty ? " (p)" : ""} {goal.minute}&apos;
-              </p>
-            ))}
-          </div>
+          {match.stadium && (
+            <span className="sm:text-right">
+              {match.stadium}
+            </span>
+          )}
         </div>
-      </div>
-
-      <div className="mt-6 border-t border-slate-100 pt-4 text-sm text-slate-600">
-        <p>{formattedDate}</p>
-        <p className="mt-1">{match.stadium}</p>
       </div>
     </article>
   );
