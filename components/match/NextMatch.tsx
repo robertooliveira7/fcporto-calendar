@@ -69,12 +69,12 @@ export function NextMatch({ match }: NextMatchProps) {
 
       <div className="p-4 sm:p-5">
         {/* Cabeçalho */}
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-start justify-between gap-3">
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-blue-600">
             Próximo jogo
           </p>
 
-          <div className="flex flex-wrap items-center justify-end gap-2 text-[10px] uppercase tracking-[0.1em] sm:text-xs">
+          <div className="flex flex-wrap items-center justify-end gap-1.5 text-right text-[10px] uppercase tracking-[0.08em] sm:gap-2 sm:text-xs sm:tracking-[0.1em]">
             <span className="font-semibold text-slate-500">
               {COMPETITION_LABELS[match.competition]}
             </span>
@@ -88,10 +88,10 @@ export function NextMatch({ match }: NextMatchProps) {
         </div>
 
         {/* Equipas + hora + data */}
-        <div className="mt-4 grid grid-cols-[1fr_auto_1fr] items-center gap-3 sm:gap-5">
+        <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:mt-4 sm:gap-5">
           {/* Casa */}
-          <div className="flex min-w-0 items-center gap-3">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center sm:h-14 sm:w-14">
+          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center sm:h-14 sm:w-14">
               {homeCrest ? (
                 <Image
                   src={homeCrest}
@@ -99,15 +99,15 @@ export function NextMatch({ match }: NextMatchProps) {
                   width={52}
                   height={52}
                   unoptimized
-                  className="max-h-12 max-w-12 object-contain sm:max-h-14 sm:max-w-14"
+                  className="max-h-10 max-w-10 object-contain sm:max-h-14 sm:max-w-14"
                 />
               ) : (
-                <div className="h-10 w-10 rounded-full bg-slate-100" />
+                <div className="h-9 w-9 rounded-full bg-slate-100 sm:h-10 sm:w-10" />
               )}
             </div>
 
             <span
-              className={`min-w-0 text-sm font-bold leading-tight sm:text-base ${
+              className={`min-w-0 text-xs font-bold leading-tight sm:text-base ${
                 homeTeam === "FC Porto"
                   ? "text-slate-950"
                   : "text-slate-700"
@@ -118,14 +118,14 @@ export function NextMatch({ match }: NextMatchProps) {
           </div>
 
           {/* Centro */}
-          <div className="flex min-w-[120px] flex-col items-center justify-center text-center">
+          <div className="flex min-w-[92px] flex-col items-center justify-center text-center sm:min-w-[120px]">
             {time ? (
               <>
-                <span className="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">
+                <span className="text-xl font-bold tracking-tight text-slate-950 sm:text-3xl">
                   {time}
                 </span>
 
-                <span className="mt-1 text-xs font-semibold uppercase tracking-[0.08em] text-slate-500 sm:text-sm">
+                <span className="mt-0.5 text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500 sm:mt-1 sm:text-sm sm:tracking-[0.08em]">
                   {displayDate}
                 </span>
               </>
@@ -137,8 +137,8 @@ export function NextMatch({ match }: NextMatchProps) {
           </div>
 
           {/* Fora */}
-          <div className="flex min-w-0 flex-row-reverse items-center gap-3 text-right">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center sm:h-14 sm:w-14">
+          <div className="flex min-w-0 flex-row-reverse items-center gap-2 text-right sm:gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center sm:h-14 sm:w-14">
               {awayCrest ? (
                 <Image
                   src={awayCrest}
@@ -146,15 +146,15 @@ export function NextMatch({ match }: NextMatchProps) {
                   width={52}
                   height={52}
                   unoptimized
-                  className="max-h-12 max-w-12 object-contain sm:max-h-14 sm:max-w-14"
+                  className="max-h-10 max-w-10 object-contain sm:max-h-14 sm:max-w-14"
                 />
               ) : (
-                <div className="h-10 w-10 rounded-full bg-slate-100" />
+                <div className="h-9 w-9 rounded-full bg-slate-100 sm:h-10 sm:w-10" />
               )}
             </div>
 
             <span
-              className={`min-w-0 text-sm font-bold leading-tight sm:text-base ${
+              className={`min-w-0 text-xs font-bold leading-tight sm:text-base ${
                 awayTeam === "FC Porto"
                   ? "text-slate-950"
                   : "text-slate-700"
@@ -166,11 +166,11 @@ export function NextMatch({ match }: NextMatchProps) {
         </div>
 
         {/* Countdown */}
-        <div className="mt-4 border-t border-slate-100 pt-3">
+        <div className="mt-3 border-t border-slate-100 pt-3 sm:mt-4">
           {match.date && (
             <div className="flex justify-center">
-              <div className="rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-2.5 shadow-sm">
-                <div className="flex items-center gap-2 text-xs text-slate-500">
+              <div className="rounded-xl border border-slate-200 bg-slate-50/70 px-3 py-2 shadow-sm sm:px-4 sm:py-2.5">
+                <div className="flex items-center gap-1.5 text-[11px] text-slate-500 sm:gap-2 sm:text-xs">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -178,7 +178,7 @@ export function NextMatch({ match }: NextMatchProps) {
                     strokeWidth="1.8"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="h-4 w-4 shrink-0 text-blue-600"
+                    className="h-3.5 w-3.5 shrink-0 text-blue-600 sm:h-4 sm:w-4"
                     aria-hidden="true"
                   >
                     <path d="M10 2h4" />
@@ -195,7 +195,7 @@ export function NextMatch({ match }: NextMatchProps) {
           )}
 
           {/* Estádio */}
-          <div className="mt-3 flex justify-end border-t border-slate-100 pt-3 text-xs text-slate-500 sm:text-sm">
+          <div className="mt-2 flex justify-end border-t border-slate-100 pt-2 text-[11px] text-slate-500 sm:mt-3 sm:pt-3 sm:text-sm">
             {match.stadium && <span>{match.stadium}</span>}
           </div>
         </div>
