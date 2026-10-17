@@ -1,6 +1,8 @@
 import type { Match, MatchStatus } from "@/types/match";
 
 const LIGA_PORTUGAL_BASE_URL = "https://www.ligaportugal.pt";
+const TACA_LIGA_MATCH_PATH =
+  "/match/20262027/allianzcup/1/1";
 
 export type TacaLigaMatchData = {
   homeTeam: string;
@@ -35,13 +37,7 @@ async function getLigaPortugalMatchPage(
 
 export async function getTacaLigaMatchPage(): Promise<string> {
   return getLigaPortugalMatchPage(
-    "/match/20262027/allianzcup/1/1"
-  );
-}
-
-export async function getHistoricalTacaLigaMatchPage(): Promise<string> {
-  return getLigaPortugalMatchPage(
-    "/match/20252026/allianzcup/1/2"
+    TACA_LIGA_MATCH_PATH
   );
 }
 
@@ -80,7 +76,7 @@ export function parseTacaLigaMatchPage(
     /class="match-item-row-score[^"]*"[\s\S]*?<\/div>/
   )?.[0];
 
-  const time = html.match(
+  const scheduledTime = html.match(
     /class="match-item-row-score no_info"[\s\S]*?<div>([^<]+)<\/div>/
   )?.[1];
 
@@ -106,11 +102,18 @@ export function parseTacaLigaMatchPage(
     );
   }
 
+  const timeFromDate = dateLabel.match(
+    /(\d{1,2}h\d{2})/
+  )?.[1];
+
   return {
     homeTeam: homeTeam.trim(),
     awayTeam: awayTeam.trim(),
     dateLabel: dateLabel.trim(),
-    time: time?.trim() ?? "",
+    time:
+      scheduledTime?.trim() ??
+      timeFromDate ??
+      "",
     homeCrest: homeCrest ?? null,
     awayCrest: awayCrest ?? null,
     homeScore,
@@ -139,7 +142,7 @@ function buildTacaLigaDate(
   };
 
   const dateMatch = dateLabel.match(
-    /(\d{1,2})\s+([a-zç]+)/i
+    /(\d{1,2})\s+([a-zç]+)(?:\s+(\d{4}))?/i
   );
 
   const timeMatch = time.match(
@@ -152,6 +155,7 @@ function buildTacaLigaDate(
 
   const day = dateMatch[1].padStart(2, "0");
   const month = monthMap[dateMatch[2].toLowerCase()];
+  const year = dateMatch[3] ?? "2026";
 
   if (!month) {
     return null;
@@ -160,14 +164,15 @@ function buildTacaLigaDate(
   const hour = timeMatch[1].padStart(2, "0");
   const minute = timeMatch[2];
 
-  return `2026-${month}-${day}T${hour}:${minute}:00+00:00`;
+  return `${year}-${month}-${day}T${hour}:${minute}:00+00:00`;
 }
 
 export async function getTacaLigaMatch(): Promise<Match> {
   const html = await getTacaLigaMatchPage();
   const data = parseTacaLigaMatchPage(html);
 
-  const fcPortoIsHome = data.homeTeam === "FC Porto";
+  const fcPortoIsHome =
+    data.homeTeam === "FC Porto";
 
   const opponent = fcPortoIsHome
     ? data.awayTeam
