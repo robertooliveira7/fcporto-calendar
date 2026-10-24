@@ -1,5 +1,7 @@
+
 import { CompetitionStageProgress } from "@/components/competitions/CompetitionStageProgress";
 import { CompetitionProgress } from "@/components/competitions/CompetitionProgress";
+import { SubscribeCalendarButton } from "@/components/calendar/SubscribeCalendarButton";
 import { MatchCard } from "@/components/match/MatchCard";
 import { NextMatch } from "@/components/match/NextMatch";
 import { ExpandableSection } from "@/components/shared/ExpandableSection";
@@ -60,18 +62,24 @@ export default async function HomePage() {
     <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
       {/* Introdução */}
       <section>
-        <div className="flex flex-col gap-2">
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-600">
-            Época 2026/27
-          </p>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div className="flex flex-col gap-2">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-600">
+              Época 2026/27
+            </p>
 
-          <h1 className="text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
-            Calendário FC Porto
-          </h1>
+            <h1 className="text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
+              Calendário FC Porto
+            </h1>
 
-          <p className="max-w-2xl text-sm text-slate-500 sm:text-base">
-            Todos os jogos do FC Porto, num só lugar.
-          </p>
+            <p className="max-w-2xl text-sm text-slate-500 sm:text-base">
+              Todos os jogos do FC Porto, num só lugar.
+            </p>
+          </div>
+
+          <div className="shrink-0">
+            <SubscribeCalendarButton />
+          </div>
         </div>
       </section>
 
