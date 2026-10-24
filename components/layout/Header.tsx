@@ -1,9 +1,37 @@
+
+"use client";
+
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 
 import { NAVIGATION } from "@/constants/navigation";
 import { SITE } from "@/constants/site";
 
 export function Header() {
+  const mobileMenuRef = useRef<HTMLDetailsElement>(null);
+
+  useEffect(() => {
+    function handleOutsideClick(event: PointerEvent) {
+      const menu = mobileMenuRef.current;
+
+      if (menu && !menu.contains(event.target as Node)) {
+        menu.open = false;
+      }
+    }
+
+    document.addEventListener("pointerdown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("pointerdown", handleOutsideClick);
+    };
+  }, []);
+
+  function closeMobileMenu() {
+    if (mobileMenuRef.current) {
+      mobileMenuRef.current.open = false;
+    }
+  }
+
   return (
     <header className="relative z-50 border-b border-slate-200 bg-white">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
@@ -24,10 +52,7 @@ export function Header() {
               const hasChildren = "children" in item;
 
               return (
-                <li
-                  key={item.href}
-                  className="group relative"
-                >
+                <li key={item.href} className="group relative">
                   {hasChildren ? (
                     <button
                       type="button"
@@ -35,11 +60,7 @@ export function Header() {
                       aria-haspopup="true"
                     >
                       {item.label}
-
-                      <span
-                        className="ml-1"
-                        aria-hidden="true"
-                      >
+                      <span className="ml-1" aria-hidden="true">
                         ▾
                       </span>
                     </button>
@@ -75,10 +96,13 @@ export function Header() {
         </nav>
 
         {/* Navegação mobile */}
-        <details className="group relative md:hidden">
+        <details
+          ref={mobileMenuRef}
+          className="group relative md:hidden"
+        >
           <summary
             className="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 [&::-webkit-details-marker]:hidden"
-            aria-label="Abrir menu"
+            aria-label="Abrir ou fechar menu"
           >
             <svg
               viewBox="0 0 24 24"
@@ -123,6 +147,7 @@ export function Header() {
                     <li key={item.href}>
                       <Link
                         href={item.href}
+                        onClick={closeMobileMenu}
                         className="block rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-950"
                       >
                         {item.label}
@@ -145,6 +170,7 @@ export function Header() {
                         <li key={child.href}>
                           <Link
                             href={child.href}
+                            onClick={closeMobileMenu}
                             className="block rounded-xl px-4 py-2.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-950"
                           >
                             {child.label}
