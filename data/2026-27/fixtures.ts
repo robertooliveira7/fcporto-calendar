@@ -656,7 +656,8 @@ export const FIXTURES: Match[] = [
     },
   ],
 },
-  {
+ 
+{
     id: "champions-league-2026-27-j3-fc-porto-psv",
     opponent: "PSV Eindhoven",
     competition: "champions-league",
@@ -666,8 +667,16 @@ export const FIXTURES: Match[] = [
     venue: "home",
     status: "scheduled",
     score: null,
-    goals: [],
+    goals: [
+  {
+      team: "opponent",
+      scorer: "Guus Til",
+      minute: "57",
+      penalty: false,
+     },
+    ],
   },
+  
   {
     id: "champions-league-2026-27-j4-fc-porto-napoli",
     opponent: "Napoli",
