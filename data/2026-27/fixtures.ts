@@ -762,4 +762,24 @@ export const FIXTURES: Match[] = [
     fcPortoCrest: "https://crests.football-data.org/503.png",
     opponentCrest: "https://crests.football-data.org/5527.png",
   },
+
+
+  
+  {
+    id: "taca-portugal-2026-27-r4-fc-porto-paredes",
+    opponent: "USC Paredes",
+    competition: "taca-portugal",
+    round: "4.ª Eliminatória",
+    date: null,
+    stadium: "Estádio do Dragão",
+    venue: "home",
+    status: "scheduled",
+    score: null,
+    goals: [],
+    fcPortoCrest: "https://crests.football-data.org/503.png",
+    opponentCrest:
+      "https://images.seeklogo.com/logo-png/14/1/usc-paredes-logo-png_seeklogo-146646.png",
+  },
+
+
 ];
