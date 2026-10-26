@@ -281,7 +281,16 @@ export const FIXTURES: Match[] = [
     venue: "away",
     status: "scheduled",
     score: null,
-    goals: [],
+    goals: [
+
+    {
+      team: "fc-porto",
+      scorer: "Borja Sainz",
+      minute: "63",
+      penalty: false,
+    },
+  ],
+
   },
   {
     id: "liga-2026-27-j10-fc-porto-estoril",
