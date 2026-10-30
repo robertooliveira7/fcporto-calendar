@@ -757,7 +757,14 @@ export const FIXTURES: Match[] = [
     venue: "home",
     status: "scheduled",
     score: null,
-    goals: [],
+    goals: [
+{
+      team: "fc-porto",
+      scorer: "Santiago Giménez",
+      minute: "45",
+      penalty: true,
+    },      
+    ],
    
     fcPortoCrest: "https://crests.football-data.org/503.png",
     opponentCrest: "https://crests.football-data.org/5527.png",
