@@ -768,8 +768,23 @@ export const FIXTURES: Match[] = [
    
     fcPortoCrest: "https://crests.football-data.org/503.png",
     opponentCrest: "https://crests.football-data.org/5527.png",
-  },
+    },
 
+
+  {
+    id: "taca-liga-2026-27-sf",
+    opponent: "Benfica",
+    competition: "taca-liga",
+    round: "Meias-finais",
+    date: null,
+    stadium: "Estádio Dr. Magalhães Pessoa, Leiria",
+    venue: "neutral",
+    status: "scheduled",
+    score: null,
+    goals: [],
+    fcPortoCrest: "https://crests.football-data.org/503.png",
+    opponentCrest: "https://crests.football-data.org/1903.png",
+  },
 
   
   {

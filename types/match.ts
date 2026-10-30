@@ -24,7 +24,7 @@ export type Match = {
   round: string;
   date: string | null;
   stadium: string;
-  venue: "home" | "away";
+  venue: "home" | "away" | "neutral";
   status: MatchStatus;
   score: {
   fcPorto: number;

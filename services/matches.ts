@@ -1,3 +1,4 @@
+
 import { FIXTURES } from "@/data/2026-27/fixtures";
 import { getTacaPortugalFixtures } from "@/services/fpf";
 import {
@@ -63,24 +64,27 @@ export async function getChampionsFixtures(): Promise<Match[]> {
 export async function getTacaLigaFixtures(): Promise<Match[]> {
   const automaticMatch = await getTacaLigaMatch();
 
-  const manualMatch = FIXTURES.find(
+  const manualMatches = FIXTURES.filter(
     (match) => match.competition === "taca-liga"
   );
 
-  if (!manualMatch) {
-    return [automaticMatch];
-  }
+  return manualMatches.map((manualMatch) => {
+    // Mantemos os dados automáticos dos quartos de final.
+    if (manualMatch.round !== automaticMatch.round) {
+      return manualMatch;
+    }
 
-  return [
-    {
+    return {
       ...automaticMatch,
+
+      // Mantemos os dados editoriais e manuais.
       id: manualMatch.id,
       opponent: manualMatch.opponent,
       stadium:
         manualMatch.stadium || automaticMatch.stadium,
       goals: manualMatch.goals,
-    },
-  ];
+    };
+  });
 }
 
 export async function getAllFixtures(): Promise<Match[]> {

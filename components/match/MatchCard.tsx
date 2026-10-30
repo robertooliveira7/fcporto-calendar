@@ -136,7 +136,8 @@ function GoalList({
 }
 
 export function MatchCard({ match }: MatchCardProps) {
-  const fcPortoIsHome = match.venue === "home";
+  // Em campo neutro, mostramos o FC Porto à esquerda.
+const fcPortoIsHome = match.venue !== "away";
 
   const homeTeam = fcPortoIsHome ? "FC Porto" : match.opponent;
   const awayTeam = fcPortoIsHome ? match.opponent : "FC Porto";
@@ -194,6 +195,14 @@ export function MatchCard({ match }: MatchCardProps) {
             <span className="text-xs font-medium uppercase tracking-[0.08em] text-slate-400">
               {match.round}
             </span>
+            {match.venue === "neutral" && (
+  <>
+    <span className="text-slate-300">·</span>
+    <span className="text-xs font-medium uppercase tracking-[0.08em] text-slate-400">
+      Campo neutro
+    </span>
+  </>
+)}
           </div>
 
           <span

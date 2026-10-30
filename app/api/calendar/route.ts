@@ -1,3 +1,4 @@
+
 import { COMPETITION_LABELS } from "@/constants/competitions";
 import { getAllFixtures } from "@/services/matches";
 import type { Match } from "@/types/match";
@@ -18,7 +19,7 @@ function formatIcsDate(date: string) {
 }
 
 function getMatchTitle(match: Match) {
-  if (match.venue === "home") {
+  if (match.venue !== "away") {
     return `FC Porto vs ${match.opponent}`;
   }
 
@@ -39,12 +40,17 @@ function createEvent(match: Match) {
   const competition =
     COMPETITION_LABELS[match.competition];
 
+  const venueDescription =
+    match.venue === "neutral"
+      ? "Jogo em campo neutro"
+      : match.venue === "home"
+        ? "FC Porto joga em casa"
+        : "FC Porto joga fora";
+
   const description = [
     competition,
     match.round,
-    match.venue === "home"
-      ? "FC Porto joga em casa"
-      : "FC Porto joga fora",
+    venueDescription,
   ].join(" · ");
 
   return [
@@ -90,8 +96,7 @@ export async function GET() {
 
   return new Response(calendar, {
     headers: {
-      "Content-Type":
-        "text/calendar; charset=utf-8",
+      "Content-Type": "text/calendar; charset=utf-8",
       "Cache-Control":
         "public, max-age=0, s-maxage=3600, stale-while-revalidate=300",
     },
