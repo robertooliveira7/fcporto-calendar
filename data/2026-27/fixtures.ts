@@ -792,7 +792,7 @@ export const FIXTURES: Match[] = [
     opponent: "USC Paredes",
     competition: "taca-portugal",
     round: "4.ª Eliminatória",
-    date: null,
+    date: "2026-11-20T20:45:00+00:00",
     stadium: "Estádio do Dragão",
     venue: "home",
     status: "scheduled",

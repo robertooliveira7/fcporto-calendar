@@ -5,7 +5,7 @@ export const TACA_PORTUGAL_STAGES: CompetitionStage[] = [
   {
     round: "4.ª Eliminatória",
     opponent: "USC Paredes",
-    date: null,
+    date: "2026-11-20T20:45:00+00:00",
     status: "upcoming",
   },
   {
