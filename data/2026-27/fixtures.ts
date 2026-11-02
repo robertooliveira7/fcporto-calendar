@@ -302,7 +302,35 @@ export const FIXTURES: Match[] = [
     venue: "home",
     status: "scheduled",
     score: null,
-    goals: [],
+    goals: [
+      {
+      team: "fc-porto",
+      scorer: "Victor Froholdt",
+      minute: "4",
+      penalty: false,
+    },
+
+    {
+      team: "fc-porto",
+      scorer: "Borja Sainz",
+      minute: "64",
+      penalty: false,
+    },
+
+    {
+      team: "fc-porto",
+      scorer: "André Silva",
+      minute: "70",
+      penalty: false,
+    },
+
+    {
+      team: "fc-porto",
+      scorer: "Gabri Veiga",
+      minute: "73",
+      penalty: false,
+    },
+    ],
   },
   {
     id: "liga-2026-27-j11-vitoria-sc-fc-porto",
