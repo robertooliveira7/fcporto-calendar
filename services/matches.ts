@@ -27,19 +27,18 @@ function mergeAutomaticMatchesWithManualData(
     }
 
     return {
-      ...automaticMatch,
-
-      // Mantemos IDs estáveis.
-      id: manualMatch.id,
-
-      // Mantemos o nome editorial quando já existe.
-      opponent: manualMatch.opponent,
-
-      // Dados que continuam manuais.
-      stadium:
-        manualMatch.stadium || automaticMatch.stadium,
-      goals: manualMatch.goals,
-    };
+  ...automaticMatch,
+  // Mantemos IDs estáveis.
+  id: manualMatch.id,
+  // Mantemos o nome editorial quando já existe.
+  opponent: manualMatch.opponent,
+  // A data manual confirmada tem prioridade sobre a data da API.
+  date: manualMatch.date ?? automaticMatch.date,
+  // Dados que continuam manuais.
+  stadium:
+    manualMatch.stadium || automaticMatch.stadium,
+  goals: manualMatch.goals,
+};
   });
 }
 
