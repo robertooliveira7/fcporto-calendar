@@ -724,7 +724,43 @@ export const FIXTURES: Match[] = [
     venue: "home",
     status: "scheduled",
     score: null,
-    goals: [],
+    goals: [
+
+      {
+      team: "fc-porto",
+      scorer: "Jan Bednarek",
+      minute: "11",
+      penalty: false,
+     },
+
+     {
+      team: "opponent",
+      scorer: "Scott McTominay",
+      minute: "43",
+      penalty: false,
+     },
+
+     {
+      team: "fc-porto",
+      scorer: "Gabri Veiga",
+      minute: "71",
+      penalty: false,
+     },
+
+     {
+      team: "fc-porto",
+      scorer: "Jakub Kiwior",
+      minute: "80",
+      penalty: false,
+     },
+
+     {
+      team: "fc-porto",
+      scorer: "Samu",
+      minute: "90",
+      penalty: true,
+     },
+    ],
   },
   {
     id: "champions-league-2026-27-j5-feyenoord-fc-porto",
