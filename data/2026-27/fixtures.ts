@@ -342,7 +342,29 @@ export const FIXTURES: Match[] = [
     venue: "away",
     status: "scheduled",
     score: null,
-    goals: [],
+    goals: [
+
+      {
+      team: "fc-porto",
+      scorer: "Borja Sainz",
+      minute: "38",
+      penalty: false,
+     },
+
+     {
+      team: "opponent",
+      scorer: "Alanzinho",
+      minute: "77",
+      penalty: false,
+     },
+
+     {
+      team: "fc-porto",
+      scorer: "Martim Fernandes",
+      minute: "86",
+      penalty: false,
+     },
+    ],
   },
   {
     id: "liga-2026-27-j12-fc-porto-sporting",
