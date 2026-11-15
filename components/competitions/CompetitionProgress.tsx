@@ -1,3 +1,4 @@
+
 import type { Match } from "@/types/match";
 
 type CompetitionProgressProps = {
@@ -33,6 +34,12 @@ export function CompetitionProgress({
         const awayTeam =
           match.venue === "home" ? match.opponent : "FC Porto";
 
+        const formattedScore = match.score
+          ? match.venue === "home"
+            ? `${match.score.fcPorto}-${match.score.opponent}`
+            : `${match.score.opponent}-${match.score.fcPorto}`
+          : null;
+
         return (
           <div
             key={match.id}
@@ -47,6 +54,12 @@ export function CompetitionProgress({
                 {homeTeam}{" "}
                 <span className="mx-2 text-slate-400">vs</span>{" "}
                 {awayTeam}
+
+                {formattedScore && (
+                  <span className="ml-2 text-sm font-semibold text-slate-500">
+                    ({formattedScore})
+                  </span>
+                )}
               </p>
 
               <p className="shrink-0 text-sm text-slate-500">
