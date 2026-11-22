@@ -2,11 +2,11 @@
 import type { CompetitionStage } from "@/types/competition";
 
 export const TACA_PORTUGAL_STAGES: CompetitionStage[] = [
-  {
+    {
     round: "4.ª Eliminatória",
     opponent: "USC Paredes",
     date: "2026-11-20T20:45:00+00:00",
-    status: "upcoming",
+    status: "finished",
   },
   {
     round: "Oitavos de final",
