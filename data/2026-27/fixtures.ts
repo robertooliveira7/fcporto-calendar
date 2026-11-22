@@ -882,10 +882,14 @@ export const FIXTURES: Match[] = [
     stadium: "Estádio do Dragão",
     venue: "home",
     status: "finished",
-    score: {
-      fcPorto: 1,
-      opponent: 1,
-    },
+   score: {
+  fcPorto: 1,
+  opponent: 1,
+},
+penaltyShootout: {
+  fcPorto: 3,
+  opponent: 1,
+},
     goals: [
       {
         team: "fc-porto",

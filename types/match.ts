@@ -30,6 +30,10 @@ export type Match = {
   fcPorto: number;
   opponent: number;
 } | null;
+penaltyShootout?: {
+  fcPorto: number;
+  opponent: number;
+} | null;
 goals: Goal[];
 fcPortoCrest?: string;
 opponentCrest?: string;

@@ -173,6 +173,18 @@ const fcPortoIsHome = match.venue !== "away";
       ? match.score.opponent
       : match.score.fcPorto
     : null;
+    const homePenaltyScore = match.penaltyShootout
+  ? fcPortoIsHome
+    ? match.penaltyShootout.fcPorto
+    : match.penaltyShootout.opponent
+  : null;
+
+const awayPenaltyScore = match.penaltyShootout
+  ? fcPortoIsHome
+    ? match.penaltyShootout.opponent
+    : match.penaltyShootout.fcPorto
+  : null;
+    
 
   const { date, time } = formatDate(match.date);
 
@@ -247,12 +259,20 @@ const fcPortoIsHome = match.venue !== "away";
           {/* Centro */}
           <div className="flex min-w-[76px] flex-col items-center justify-center">
             {match.status === "finished" && match.score ? (
-              <div className="whitespace-nowrap text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">
-                {homeScore}
-                <span className="mx-2 font-normal text-slate-300">—</span>
-                {awayScore}
-              </div>
-            ) : (
+  <>
+    <div className="whitespace-nowrap text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">
+      {homeScore}
+      <span className="mx-2 font-normal text-slate-300">—</span>
+      {awayScore}
+    </div>
+
+    {match.penaltyShootout && (
+      <p className="mt-1 whitespace-nowrap text-[10px] font-medium text-slate-500 sm:text-xs">
+        ({homePenaltyScore}–{awayPenaltyScore} após grandes penalidades)
+      </p>
+    )}
+  </>
+) : (
               <>
                 {time ? (
                   <div className="text-xl font-bold tracking-tight text-slate-950 sm:text-2xl">
