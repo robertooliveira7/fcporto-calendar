@@ -267,7 +267,7 @@ const awayPenaltyScore = match.penaltyShootout
     </div>
 
     {match.penaltyShootout && (
-      <p className="mt-1 whitespace-nowrap text-[10px] font-medium text-slate-500 sm:text-xs">
+      <p className="mt-1 whitespace-nowrap text-xs font-semibold text-slate-600 sm:text-sm">
         ({homePenaltyScore}–{awayPenaltyScore} após grandes penalidades)
       </p>
     )}
