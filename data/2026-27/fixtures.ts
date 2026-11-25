@@ -917,5 +917,18 @@ penaltyShootout: {
       "https://images.seeklogo.com/logo-png/14/1/usc-paredes-logo-png_seeklogo-146646.png",
   },
 
+    {
+    id: "taca-portugal-2026-27-r5-fc-porto-ud-leiria",
+    opponent: "UD Leiria",
+    competition: "taca-portugal",
+    round: "Oitavos de final",
+    date: "2026-12-16T15:00:00+00:00",
+    stadium: "Estádio Dr. Magalhães Pessoa",
+    venue: "away",
+    status: "scheduled",
+    score: null,
+    goals: [],
+    fcPortoCrest: "https://crests.football-data.org/503.png",
+  },
 
 ];

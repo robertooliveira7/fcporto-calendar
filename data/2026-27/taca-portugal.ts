@@ -8,10 +8,10 @@ export const TACA_PORTUGAL_STAGES: CompetitionStage[] = [
     date: "2026-11-20T20:45:00+00:00",
     status: "finished",
   },
-  {
+   {
     round: "Oitavos de final",
-    opponent: "Vencedor de UD Leiria / Leça FC",
-    date: null,
+    opponent: "UD Leiria",
+    date: "2026-12-16T15:00:00+00:00",
     status: "upcoming",
   },
 ];
