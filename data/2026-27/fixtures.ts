@@ -794,7 +794,15 @@ export const FIXTURES: Match[] = [
     venue: "away",
     status: "scheduled",
     score: null,
-    goals: [],
+    goals: [
+
+      {
+      team: "fc-porto",
+      scorer: "Oussama Targhalline (autogolo)",
+      minute: "2",
+      penalty: false,
+     },
+    ],
   },
   {
     id: "champions-league-2026-27-j6-liverpool-fc-porto",
