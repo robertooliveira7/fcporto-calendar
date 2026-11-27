@@ -922,7 +922,7 @@ penaltyShootout: {
     opponent: "UD Leiria",
     competition: "taca-portugal",
     round: "Oitavos de final",
-    date: "2026-12-16T15:00:00+00:00",
+    date: "2026-12-17T19:00:00+00:00",
     stadium: "Estádio Dr. Magalhães Pessoa",
     venue: "away",
     status: "scheduled",
