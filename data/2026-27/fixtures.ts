@@ -929,6 +929,7 @@ penaltyShootout: {
     score: null,
     goals: [],
     fcPortoCrest: "https://crests.football-data.org/503.png",
+    opponentCrest: "https://cdn-img.staticzz.com/img/logos/equipas_a_data/4163_logo__20240701152629.png",
   },
 
 ];
